@@ -10,7 +10,7 @@ public class ConexionBD{
     private final String driver = "com.mysql.cj.jdbc.Driver";
     private final String url = "jdbc:mysql://localhost:3306/farmaciaDB";
     
-    private final String USER = "";
+    private final String USER = " sdfdsf";
     private final String PASSWORD = "";
     
     
