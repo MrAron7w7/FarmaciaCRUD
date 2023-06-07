@@ -1,5 +1,11 @@
 package farmaciacrud.Ventanas;
 
+import farmaciacrud.DAO.DaoOperadoresImpl;
+import farmaciacrud.Metodos.Operadores;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 public class ventanaPanelHorario extends javax.swing.JPanel {
 
     public ventanaPanelHorario() {
@@ -99,6 +105,11 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/guardar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnGuardarMouseClicked(evt);
+            }
+        });
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/hora.png"))); // NOI18N
 
@@ -176,6 +187,34 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
+        DaoOperadoresImpl operadores_dao = new DaoOperadoresImpl();
+        Operadores operadores = new Operadores();
+        try {
+            operadores.setNombreOperadores(datosNombre.getText().trim());
+        operadores.setHora(datosHora.getText().trim());
+        
+        if(operadores.getNombreOperadores().length() > 0 && operadores.getHora().length() > 0){
+            operadores_dao.registrarOperadores(operadores);
+            Icon check = new ImageIcon(getClass().getResource("check.png"));
+            JOptionPane.showMessageDialog(null, "Guardado con exito", "Valido", JOptionPane.WARNING_MESSAGE, check);
+        }
+        else{
+            Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+            JOptionPane.showMessageDialog(null, "Los datos no fueron guardados", "invalido", JOptionPane.WARNING_MESSAGE, wrong);
+        }
+        } catch (Exception e) {
+            Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+            JOptionPane.showMessageDialog(null, "Falta rellenar campos", "Invalido", JOptionPane.WARNING_MESSAGE, wrong);
+        }
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_btnGuardarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

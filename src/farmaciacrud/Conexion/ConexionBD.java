@@ -1,38 +1,53 @@
 package farmaciacrud.Conexion;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
-public class ConexionBD{ 
+public class ConexionBD {
 
-    protected Connection conexion = null;
+    private ConexionBD() {
+
+    }
+
+    private static Connection conexion;
+    private static ConexionBD instancia;
     private final String driver = "com.mysql.cj.jdbc.Driver";
-    private final String url = "jdbc:mysql://localhost:3306/farmaciaDB";
-    
-    private final String USER = " sdfdsf";
+    private final String url = "jdbc:mysql://localhost:3306/farmaciaDB?serverTimezone=UTC";
+
+    private final String USER = "";
     private final String PASSWORD = "";
-    
-    
-    public void Conectar() throws ClassNotFoundException{
+
+    public Connection conectar() throws ClassNotFoundException {
         try {
+            Class.forName(driver);
             conexion = DriverManager.getConnection(url, USER, PASSWORD);
-        } catch (SQLException ex) {
-            Logger.getLogger(ConexionBD.class.getName()).log(Level.SEVERE, null, ex);
+
+            return conexion;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e);
         }
-        Class.forName(driver);
+        return conexion;
+    }
+
+    // Este metodo cerramos coneccion
+    public void cerrarConexion() throws SQLException {
+        try {
+            conexion.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: "
+                    + e);
+        } finally {
+            conexion.close();
+        }
 
     }
-    
-    public void Cerrar() throws SQLException{
-        if(conexion != null){
-            if(!conexion.isClosed()){
-                conexion.close();
-            }
-            
+
+    // Patron de singleton
+    public static ConexionBD getInstance() {
+        if (instancia == null) {
+            instancia = new ConexionBD();
         }
+        return instancia;
     }
- 
-    
 
 }

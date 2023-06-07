@@ -1,5 +1,13 @@
 package farmaciacrud.Ventanas;
+
+import farmaciacrud.DAO.DaoClientImpl;
+import farmaciacrud.Metodos.Cliente;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 public class ventanaPanelDatos extends javax.swing.JPanel {
+
     public ventanaPanelDatos() {
         initComponents();
     }
@@ -19,7 +27,7 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         btnActualizar = new javax.swing.JButton();
-        btnGuardar = new javax.swing.JButton();
+        btnRegistrar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         datosDNI = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -99,12 +107,17 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
         btnActualizar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnActualizar.setIconTextGap(9);
 
-        btnGuardar.setBackground(new java.awt.Color(255, 255, 255));
-        btnGuardar.setFont(new java.awt.Font("Fira Code", 0, 12)); // NOI18N
-        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/guardar.png"))); // NOI18N
-        btnGuardar.setText("Guardar");
-        btnGuardar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnGuardar.setIconTextGap(10);
+        btnRegistrar.setBackground(new java.awt.Color(255, 255, 255));
+        btnRegistrar.setFont(new java.awt.Font("Fira Code", 0, 12)); // NOI18N
+        btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/guardar.png"))); // NOI18N
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnRegistrar.setIconTextGap(10);
+        btnRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRegistrarMouseClicked(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Fira Code", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -154,7 +167,7 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
                                     .addComponent(datosApellidos))
                                 .addGap(46, 46, 46)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -183,7 +196,7 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(datosNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGuardar))
+                    .addComponent(btnRegistrar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -216,12 +229,41 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseClicked
+        DaoClientImpl cliente_dao = new DaoClientImpl();
+        Cliente cliente = new Cliente();
+
+        try {
+
+            //cliente.setId(1);
+            cliente.setNombre(datosNombres.getText());
+            cliente.setApellidos(datosApellidos.getText());
+            cliente.setDni(Integer.parseInt(datosDNI.getText()));
+            cliente.setBusqueda(datosBusqueda.getText());
+            
+            // Validamos los cambios
+            if (cliente.getNombre().length() > 0 && cliente.getApellidos().length() > 0) {
+                Icon check = new ImageIcon(getClass().getResource("check.png"));
+                JOptionPane.showMessageDialog(null, "Guardado con exito", "Valido", JOptionPane.WARNING_MESSAGE, check);
+                cliente_dao.registrar(cliente);
+            } else {
+                Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+                JOptionPane.showMessageDialog(null, "Debe llenar los datos", "Invalido", JOptionPane.WARNING_MESSAGE, wrong);
+            }
+        } catch (Exception e) {
+            Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+            JOptionPane.showMessageDialog(null, "Falta rellenar campos", "Invalido", JOptionPane.WARNING_MESSAGE, wrong);
+        }
+
+
+    }//GEN-LAST:event_btnRegistrarMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnRegistrar;
     private javax.swing.JTextField datosApellidos;
     private javax.swing.JTextField datosBusqueda;
     private javax.swing.JTextField datosDNI;

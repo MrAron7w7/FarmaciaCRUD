@@ -1,19 +1,19 @@
 package farmaciacrud;
 
 import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
-import farmaciacrud.Conexion.ConexionBD;
+import farmaciacrud.DAO.DaoLoginImpl;
+import farmaciacrud.Metodos.Login;
 import farmaciacrud.Ventanas.ventanaPrincipal;
 import java.awt.Color;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-public class CRUD extends javax.swing.JFrame{
-    ConexionBD con = new ConexionBD();
+public class CRUD extends javax.swing.JFrame {
 
-    public CRUD() {     
+    public CRUD() {
         initComponents();
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -145,32 +145,53 @@ public class CRUD extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarMouseClicked
+        DaoLoginImpl login_dao = new DaoLoginImpl();
+        Login login = new Login();
 
-        validadInicio();
+        try {
+            String contra = String.valueOf(datos_Pass.getText());
+            login.setUser(datos_Usuario.getText());
+            login.setPass(contra);
+            if (login.getUser().equals("") && login.getPass().equals("")) {
+                Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+                JOptionPane.showMessageDialog(null, "Llene los campos", "Error", JOptionPane.WARNING_MESSAGE, wrong);
+
+            } else {
+                login_dao.validar(login);
+                validadInicio();
+
+            }
+
+        } catch (Exception e) {
+            Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+            JOptionPane.showMessageDialog(null, "Llene los campos", "Error", JOptionPane.WARNING_MESSAGE, wrong);
+        }
+
+
     }//GEN-LAST:event_btnIniciarMouseClicked
 
     private void datos_UsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_datos_UsuarioMousePressed
-        if(datos_Usuario.getText().equals("Nombre de usuario")){
+        if (datos_Usuario.getText().equals("Nombre de usuario")) {
             datos_Usuario.setText("");
             datos_Usuario.setForeground(Color.BLACK);
         }
-        if(String.valueOf(datos_Pass.getPassword()).isEmpty()){
+        if (String.valueOf(datos_Pass.getPassword()).isEmpty()) {
             datos_Pass.setText("************");
             datos_Pass.setForeground(Color.GRAY);
         }
-        
+
     }//GEN-LAST:event_datos_UsuarioMousePressed
 
     private void datos_PassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_datos_PassMousePressed
-        if(String.valueOf(datos_Pass.getPassword()).equals("************")){
+        if (String.valueOf(datos_Pass.getPassword()).equals("************")) {
             datos_Pass.setText("");
             datos_Pass.setForeground(Color.BLACK);
         }
-        if(datos_Usuario.getText().isEmpty()){
+        if (datos_Usuario.getText().isEmpty()) {
             datos_Usuario.setText("Nombre de usuario");
             datos_Usuario.setForeground(Color.GRAY);
         }
- 
+
     }//GEN-LAST:event_datos_PassMousePressed
 
     public static void main(String args[]) {
@@ -182,19 +203,19 @@ public class CRUD extends javax.swing.JFrame{
             new CRUD().setVisible(true);
         });
     }
-    
+
     // Metodos
-    private void validadInicio(){
+    public void validadInicio() {
         // Muestra de icono en Joption
-        Icon check = new ImageIcon("src\\farmacicrud\\Resources\\check.png");
-        JOptionPane.showMessageDialog(null, "Usuario iniciado con exito", "Sesion Valida", JOptionPane.WARNING_MESSAGE, check);
+        Icon usuarioLogin = new ImageIcon(getClass().getResource("usuarioLogin.png"));
+        JOptionPane.showMessageDialog(null, "Usuario iniciado con exito", "Sesion Valida", JOptionPane.WARNING_MESSAGE, usuarioLogin);
 
         ventanaPrincipal principal = new ventanaPrincipal();
         principal.setVisible(true);
         this.dispose();
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JButton btnIniciar;
