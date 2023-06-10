@@ -1,7 +1,7 @@
 package farmaciacrud.DAO;
 
 import farmaciacrud.Conexion.ConexionBD;
-import farmaciacrud.Metodos.Cliente;
+import farmaciacrud.MetodosTrabajos.Cliente;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;

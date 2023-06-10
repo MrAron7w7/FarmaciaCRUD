@@ -1,15 +1,61 @@
 package farmaciacrud.Ventanas;
 
+import farmaciacrud.Conexion.ConexionBD;
 import farmaciacrud.DAO.DaoClientImpl;
-import farmaciacrud.Metodos.Cliente;
+import farmaciacrud.MetodosTrabajos.Cliente;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class ventanaPanelDatos extends javax.swing.JPanel {
+    
+    public void mostar(String tabla) throws ClassNotFoundException{
+        
+        // Nos conectamos a la base de datos
+        ConexionBD con = new ConexionBD();
+        String sql = "Select * FROM " + tabla;
+        Statement st;
+        Connection ConexionDB = con.conectar();
+        
+        // Poner tabla editable o no editable
+        tbeMedicamentos.setEnabled(false);
+        
+        // Defino el numero de columnas de tablas
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Nombre");
+        model.addColumn("Precio");
+        model.addColumn("Stock");
+        
+        tbeMedicamentos.setModel(model);
+        
+        // Vector de las columnas de la tabla medicamentos
+        String[] medicamentos = new String[3];
+        
+        try {
+            st = ConexionDB.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                medicamentos[0] = rs.getString(2);
+                medicamentos[1] = rs.getString(3);
+                medicamentos[2] = rs.getString(4);
+                model.addRow(medicamentos);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e);
+        }
+        
+        
+        
+    }
 
-    public ventanaPanelDatos() {
+    public ventanaPanelDatos() throws ClassNotFoundException {
         initComponents();
+        mostar("medicamentos");
     }
 
     @SuppressWarnings("unchecked")
@@ -25,7 +71,7 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
         datosApellidos = new javax.swing.JTextField();
         datosNombres = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbeMedicamentos = new javax.swing.JTable();
         btnActualizar = new javax.swing.JButton();
         btnRegistrar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -69,9 +115,9 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
         datosNombres.setBackground(new java.awt.Color(255, 255, 255));
         datosNombres.setFont(new java.awt.Font("Fira Code", 0, 14)); // NOI18N
 
-        jTable2.setBackground(new java.awt.Color(255, 255, 255));
-        jTable2.setForeground(new java.awt.Color(0, 0, 0));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbeMedicamentos.setBackground(new java.awt.Color(255, 255, 255));
+        tbeMedicamentos.setForeground(new java.awt.Color(0, 0, 0));
+        tbeMedicamentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -98,7 +144,7 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tbeMedicamentos);
 
         btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizar.setFont(new java.awt.Font("Fira Code", 0, 12)); // NOI18N
@@ -277,6 +323,6 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tbeMedicamentos;
     // End of variables declaration//GEN-END:variables
 }

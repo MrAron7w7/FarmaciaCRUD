@@ -1,4 +1,4 @@
-package farmaciacrud.Metodos;
+package farmaciacrud.MetodosTrabajos;
 
 public class Operadores {
     

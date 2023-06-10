@@ -2,7 +2,7 @@ package farmaciacrud.DAO;
 
 import farmaciacrud.CRUD;
 import farmaciacrud.Conexion.ConexionBD;
-import farmaciacrud.Metodos.Login;
+import farmaciacrud.MetodosTrabajos.Login;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -1,6 +1,6 @@
 package farmaciacrud.DAO;
 
-import farmaciacrud.Metodos.Login;
+import farmaciacrud.MetodosTrabajos.Login;
 
 public interface DaoLogin {
     public void validar(Login login);

@@ -1,9 +1,65 @@
 package farmaciacrud.Ventanas;
 
-public class ventanaPanelVoucher extends javax.swing.JPanel {
+import farmaciacrud.Conexion.ConexionBD;
+import farmaciacrud.DAO.DaoVoucherImpl;
+import farmaciacrud.MetodosTrabajos.Voucher;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
-    public ventanaPanelVoucher() {
+public class ventanaPanelVoucher extends javax.swing.JPanel {
+    
+    public void mostrar(String tabla) throws ClassNotFoundException{
+        ConexionBD con = new ConexionBD();
+        Statement st;
+        String sql = "Select * FROM " + tabla;
+        Connection ConexionDB = con.conectar();
+        
+        // Poner table editable o no editable
+        tbeVoucher.setEnabled(true);
+        
+        // Defino el numero de columnas de la tabla voucher
+        DefaultTableModel model = new DefaultTableModel();
+        
+        model.addColumn("DNI");
+        model.addColumn("Nombre");
+        model.addColumn("Compra");
+        model.addColumn("Precio");
+        
+       
+        
+        
+        tbeVoucher.setModel(model);
+        
+        // Vector de columnas de la tabla
+        String[] vouch = new String[4];
+        
+        try {
+            st = ConexionDB.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                vouch[0] = rs.getString(2);
+                vouch[1] = rs.getString(3);
+                vouch[2] = rs.getString(4);
+                vouch[3] = rs.getString(5);
+                
+                model.addRow(vouch);
+            }
+            
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error" + e);
+        }
+        
+        
+    }
+
+    public ventanaPanelVoucher() throws ClassNotFoundException {
         initComponents();
+        mostrar("vouchers");
     }
 
     @SuppressWarnings("unchecked")
@@ -17,7 +73,7 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
         txtDniVoucher = new javax.swing.JTextField();
         btnBuscarVoucher = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbeVoucher = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -46,25 +102,30 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
         btnBuscarVoucher.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         btnBuscarVoucher.setForeground(new java.awt.Color(255, 255, 255));
         btnBuscarVoucher.setText("Buscar");
+        btnBuscarVoucher.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarVoucherMouseClicked(evt);
+            }
+        });
 
-        jTable2.setBackground(new java.awt.Color(255, 255, 255));
-        jTable2.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbeVoucher.setBackground(new java.awt.Color(255, 255, 255));
+        tbeVoucher.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        tbeVoucher.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "DNI", "Compra", "Precio"
+                "ID", "DNI", "Nombre", "Compra", "Precio"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -75,7 +136,7 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tbeVoucher);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -118,6 +179,24 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBuscarVoucherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarVoucherMouseClicked
+        DaoVoucherImpl voucher_dao = new DaoVoucherImpl();
+        Voucher voucher = new Voucher();
+        
+        try {
+            
+            voucher.setDni(Integer.parseInt(txtDniVoucher.getText()));
+            
+            if(voucher.getDni() > 0 && voucher.getDni() > 10){
+                voucher_dao.buscar(voucher);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Llene los campos");
+            }
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnBuscarVoucherMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarVoucher;
@@ -126,7 +205,7 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tbeVoucher;
     private javax.swing.JTextField txtDniVoucher;
     // End of variables declaration//GEN-END:variables
 }

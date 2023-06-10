@@ -1,7 +1,7 @@
 package farmaciacrud.DAO;
 
 import farmaciacrud.Conexion.ConexionBD;
-import farmaciacrud.Metodos.Operadores;
+import farmaciacrud.MetodosTrabajos.Operadores;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

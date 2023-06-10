@@ -5,10 +5,13 @@ import java.awt.BorderLayout;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class ventanaPrincipal extends javax.swing.JFrame {
 
-    public ventanaPrincipal() {
+    public ventanaPrincipal() throws ClassNotFoundException {
         initComponents();
         setDay();
         initContent();
@@ -247,11 +250,16 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirMouseClicked
 
     private void btnPrincipalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPrincipalMouseClicked
-        initContent();
+        try {
+            initContent();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ventanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnPrincipalMouseClicked
 
     private void btnDatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDatosMouseClicked
-        ventanaPanelDatos datos = new ventanaPanelDatos();
+        try {
+            ventanaPanelDatos datos = new ventanaPanelDatos();
         datos.setSize(660, 450);
         datos.setLocation(0,0);
         
@@ -259,10 +267,16 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         content.add(datos, BorderLayout.CENTER);
         content.revalidate();
         content.repaint();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error " + e);
+        }
+        
+        
     }//GEN-LAST:event_btnDatosMouseClicked
 
     private void btnVoucherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVoucherMouseClicked
-        ventanaPanelVoucher voucher = new ventanaPanelVoucher();
+        try {
+            ventanaPanelVoucher voucher = new ventanaPanelVoucher();
         voucher.setSize(660, 450);
         voucher.setLocation(0, 0);
         
@@ -270,6 +284,11 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         content.add(voucher, BorderLayout.CENTER);
         content.revalidate();
         content.repaint();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error" + e);
+        }
+
+        
     }//GEN-LAST:event_btnVoucherMouseClicked
   
     // Mis metodos
@@ -284,7 +303,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         dayText.setText(now.format(DateTimeFormatter.ofPattern("'hoy es' EEEE dd 'de' MMMM 'del' yyyy", spanishLocal)));
     }
     
-    private void initContent(){
+    private void initContent() throws ClassNotFoundException{
         ventanaPanelHorario horario = new ventanaPanelHorario();
         horario.setSize(660, 450);
         horario.setLocation(0,0);

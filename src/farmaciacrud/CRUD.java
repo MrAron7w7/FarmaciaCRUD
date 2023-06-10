@@ -2,7 +2,7 @@ package farmaciacrud;
 
 import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
 import farmaciacrud.DAO.DaoLoginImpl;
-import farmaciacrud.Metodos.Login;
+import farmaciacrud.MetodosTrabajos.Login;
 import farmaciacrud.Ventanas.ventanaPrincipal;
 import java.awt.Color;
 import javax.swing.Icon;
@@ -205,7 +205,7 @@ public class CRUD extends javax.swing.JFrame {
     }
 
     // Metodos
-    public void validadInicio() {
+    public void validadInicio() throws ClassNotFoundException {
         // Muestra de icono en Joption
         Icon usuarioLogin = new ImageIcon(getClass().getResource("usuarioLogin.png"));
         JOptionPane.showMessageDialog(null, "Usuario iniciado con exito", "Sesion Valida", JOptionPane.WARNING_MESSAGE, usuarioLogin);

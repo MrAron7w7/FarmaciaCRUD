@@ -1,15 +1,56 @@
 package farmaciacrud.Ventanas;
 
+import farmaciacrud.Conexion.ConexionBD;
 import farmaciacrud.DAO.DaoOperadoresImpl;
-import farmaciacrud.Metodos.Operadores;
+import farmaciacrud.MetodosTrabajos.Operadores;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class ventanaPanelHorario extends javax.swing.JPanel {
 
-    public ventanaPanelHorario() {
+    // Poner datos en tabla
+    public void mostrar(String tabla) throws ClassNotFoundException {
+        //Nos conectamos con la base de datos
+        ConexionBD con = new ConexionBD();
+        String sql = "SELECT * FROM " + tabla;
+        Statement st;
+        Connection ConexionBD = con.conectar();
+
+        // Definimos nuestro datos en la tabla
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Nombre");
+        model.addColumn("Hora");
+        tbeHorarios.setModel(model);
+        
+        // Poner tabla editable o no editable
+        tbeHorarios.setEnabled(false);
+
+        // Vector de columnas
+        String[] datos = new String[2];
+
+        try {
+            st = ConexionBD.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) { // Si exite sigue
+                datos[0] = rs.getString(2); // Traemos la segunda columna de base mysql
+                datos[1] = rs.getString(3); // Traemos la tercera columna de base mysql
+                model.addRow(datos); // Añadimos el modelo los datos
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e);
+        }
+
+    }
+
+    public ventanaPanelHorario() throws ClassNotFoundException {
         initComponents();
+        mostrar("operadores");
     }
 
     @SuppressWarnings("unchecked")
@@ -25,7 +66,7 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         datosHora = new javax.swing.JTextField();
         datosNombre = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbeHorarios = new javax.swing.JTable();
         btnActualizar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -64,9 +105,9 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         datosNombre.setBackground(new java.awt.Color(255, 255, 255));
         datosNombre.setFont(new java.awt.Font("Fira Code", 0, 14)); // NOI18N
 
-        jTable2.setBackground(new java.awt.Color(255, 255, 255));
-        jTable2.setForeground(new java.awt.Color(0, 0, 0));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbeHorarios.setBackground(new java.awt.Color(255, 255, 255));
+        tbeHorarios.setForeground(new java.awt.Color(0, 0, 0));
+        tbeHorarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -92,7 +133,7 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tbeHorarios);
 
         btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizar.setFont(new java.awt.Font("Fira Code", 0, 12)); // NOI18N
@@ -189,31 +230,42 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
+        /*ConsultaOperadores consulta = new ConsultaOperadores();
+        
+        String nombre = datosNombre.getText();
+        String hora = datosHora.getText();
+        
+        try {
+            consulta.consulta(nombre, hora);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ventanaPanelHorario.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+
+        // Agregamos y validamos los campos, si estan vacios o si ponen datos
         DaoOperadoresImpl operadores_dao = new DaoOperadoresImpl();
         Operadores operadores = new Operadores();
+
         try {
             operadores.setNombreOperadores(datosNombre.getText().trim());
-        operadores.setHora(datosHora.getText().trim());
-        
-        if(operadores.getNombreOperadores().length() > 0 && operadores.getHora().length() > 0){
-            operadores_dao.registrarOperadores(operadores);
-            Icon check = new ImageIcon(getClass().getResource("check.png"));
-            JOptionPane.showMessageDialog(null, "Guardado con exito", "Valido", JOptionPane.WARNING_MESSAGE, check);
-        }
-        else{
-            Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
-            JOptionPane.showMessageDialog(null, "Los datos no fueron guardados", "invalido", JOptionPane.WARNING_MESSAGE, wrong);
-        }
+            operadores.setHora(datosHora.getText().trim());
+
+            if (operadores.getNombreOperadores().length() > 0 && operadores.getHora().length() > 0) {
+                operadores_dao.registrarOperadores(operadores);
+                mostrar("operadores");
+                Icon check = new ImageIcon(getClass().getResource("check.png"));
+                JOptionPane.showMessageDialog(null, "Guardado con exito", "Valido", JOptionPane.WARNING_MESSAGE, check);
+                datosNombre.setText("");
+                datosHora.setText("");
+            } else {
+                Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+                JOptionPane.showMessageDialog(null, "Los datos no fueron guardados", "invalido", JOptionPane.WARNING_MESSAGE, wrong);
+            }
         } catch (Exception e) {
             Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
             JOptionPane.showMessageDialog(null, "Falta rellenar campos", "Invalido", JOptionPane.WARNING_MESSAGE, wrong);
         }
-        
-        
-        
-        
-        
-        
+
+
     }//GEN-LAST:event_btnGuardarMouseClicked
 
 
@@ -231,6 +283,6 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tbeHorarios;
     // End of variables declaration//GEN-END:variables
 }

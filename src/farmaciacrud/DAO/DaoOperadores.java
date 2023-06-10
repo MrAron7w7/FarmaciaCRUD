@@ -1,6 +1,6 @@
 package farmaciacrud.DAO;
 
-import farmaciacrud.Metodos.Operadores;
+import farmaciacrud.MetodosTrabajos.Operadores;
 
 
 public interface DaoOperadores {

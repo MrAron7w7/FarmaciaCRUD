@@ -1,6 +1,6 @@
 package farmaciacrud.DAO;
 
-import farmaciacrud.Metodos.Cliente;
+import farmaciacrud.MetodosTrabajos.Cliente;
 
 public interface DaoCliente {
     public void registrar(Cliente cliente);
