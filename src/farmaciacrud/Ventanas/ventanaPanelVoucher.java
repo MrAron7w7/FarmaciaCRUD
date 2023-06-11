@@ -2,64 +2,84 @@ package farmaciacrud.Ventanas;
 
 import farmaciacrud.Conexion.ConexionBD;
 import farmaciacrud.DAO.DaoVoucherImpl;
+import farmaciacrud.MetodosTrabajos.Cliente;
 import farmaciacrud.MetodosTrabajos.Voucher;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.sql.PreparedStatement;
 
 public class ventanaPanelVoucher extends javax.swing.JPanel {
-    
-    public void mostrar(String tabla) throws ClassNotFoundException{
+
+    public void mostrar(String tabla) throws ClassNotFoundException {
         ConexionBD con = new ConexionBD();
         Statement st;
         String sql = "Select * FROM " + tabla;
         Connection ConexionDB = con.conectar();
-        
+
         // Poner table editable o no editable
         tbeVoucher.setEnabled(true);
-        
+
         // Defino el numero de columnas de la tabla voucher
         DefaultTableModel model = new DefaultTableModel();
-        
+
         model.addColumn("DNI");
         model.addColumn("Nombre");
         model.addColumn("Compra");
-        model.addColumn("Precio");
-        
-       
-        
-        
+        //model.addColumn("Precio");
+
         tbeVoucher.setModel(model);
-        
+
         // Vector de columnas de la tabla
-        String[] vouch = new String[4];
-        
+        String[] vouch = new String[3];
+
         try {
             st = ConexionDB.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                vouch[0] = rs.getString(2);
-                vouch[1] = rs.getString(3);
-                vouch[2] = rs.getString(4);
-                vouch[3] = rs.getString(5);
-                
+            while (rs.next()) {
+                vouch[0] = rs.getString(4);
+                vouch[1] = rs.getString(2);
+                vouch[2] = rs.getString(5);
+                //vouch[3] = rs.getString(5);
+
                 model.addRow(vouch);
             }
-            
-        
+
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error" + e);
         }
-        
-        
+
     }
 
-    public ventanaPanelVoucher() throws ClassNotFoundException {
+    public void mostrarDatos() throws ClassNotFoundException, SQLException {
+        ConexionBD con = new ConexionBD();
+        Cliente cliente = new Cliente();
+        try {
+            //Statement st;
+            String sql = "INSERT INTO vouchers(dni, nombre, compra, precio) VALUES(?,?,?,?)";
+            PreparedStatement buscar = con.conectar().prepareStatement(sql);
+
+            buscar.setInt(1, cliente.getDni());
+            buscar.setString(2, cliente.getNombre());
+            buscar.setString(3, cliente.getApellidos());
+            buscar.setString(4, cliente.getNombre());
+            con.cerrarConexion();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
+
+    public ventanaPanelVoucher() throws ClassNotFoundException, SQLException {
         initComponents();
-        mostrar("vouchers");
+        //mostrarDatos();
+        mostrar("clientes");
+
     }
 
     @SuppressWarnings("unchecked")
@@ -74,6 +94,8 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
         btnBuscarVoucher = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbeVoucher = new javax.swing.JTable();
+        btnEliminar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -97,6 +119,11 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
         txtDniVoucher.setBackground(new java.awt.Color(255, 255, 255));
         txtDniVoucher.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         txtDniVoucher.setForeground(new java.awt.Color(51, 51, 51));
+        txtDniVoucher.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDniVoucherKeyReleased(evt);
+            }
+        });
 
         btnBuscarVoucher.setBackground(new java.awt.Color(42, 166, 67));
         btnBuscarVoucher.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -109,7 +136,6 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
         });
 
         tbeVoucher.setBackground(new java.awt.Color(255, 255, 255));
-        tbeVoucher.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         tbeVoucher.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -136,7 +162,28 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tbeVoucher.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane2.setViewportView(tbeVoucher);
+
+        btnEliminar.setBackground(new java.awt.Color(255, 51, 51));
+        btnEliminar.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEliminarMouseClicked(evt);
+            }
+        });
+
+        btnActualizar.setBackground(new java.awt.Color(102, 102, 255));
+        btnActualizar.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnActualizarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -151,7 +198,12 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(txtDniVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnBuscarVoucher, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)))
+                        .addComponent(btnBuscarVoucher, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnEliminar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnActualizar)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -164,7 +216,11 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
                     .addComponent(btnBuscarVoucher))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnActualizar))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -179,27 +235,62 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void btnBuscarVoucherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarVoucherMouseClicked
         DaoVoucherImpl voucher_dao = new DaoVoucherImpl();
         Voucher voucher = new Voucher();
         
-        try {
-            
-            voucher.setDni(Integer.parseInt(txtDniVoucher.getText()));
-            
-            if(voucher.getDni() > 0 && voucher.getDni() > 10){
-                voucher_dao.buscar(voucher);
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Llene los campos");
-            }
-        } catch (Exception e) {
-        }
+        voucher.setDni(Integer.parseInt(txtDniVoucher.getText()));
+        voucher_dao.buscar(voucher);
+
+        
     }//GEN-LAST:event_btnBuscarVoucherMouseClicked
 
+    private void btnEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarMouseClicked
+        try {
+            eliminar();
+        } catch (Exception e) {
+            Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+            JOptionPane.showMessageDialog(null, "No ha escogido un dato a eliminar", "Error", JOptionPane.WARNING_MESSAGE, wrong);
+        }
+
+
+    }//GEN-LAST:event_btnEliminarMouseClicked
+
+    private void btnActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseClicked
+        try {
+            mostrar("clientes");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error no se pudo actualizar los datos");
+        }
+    }//GEN-LAST:event_btnActualizarMouseClicked
+
+    private void txtDniVoucherKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDniVoucherKeyReleased
+
+    }//GEN-LAST:event_txtDniVoucherKeyReleased
+
+    public void eliminar() throws SQLException, ClassNotFoundException {
+        ConexionBD con = ConexionBD.getInstance();
+        int fila = tbeVoucher.getSelectedRow();
+        String identidad = tbeVoucher.getValueAt(fila, 0).toString();
+        String sql = "DELETE FROM clientes WHERE dni=" + identidad;
+        try {
+            PreparedStatement eliminar = con.conectar().prepareStatement(sql);
+            eliminar.executeUpdate();
+            if (eliminar.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Dato eliminado con exito");
+            }
+            mostrar("clientes");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error " + e);
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscarVoucher;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

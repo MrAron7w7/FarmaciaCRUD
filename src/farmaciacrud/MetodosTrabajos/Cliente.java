@@ -1,6 +1,7 @@
 package farmaciacrud.MetodosTrabajos;
 
 public class Cliente {
+
     private int id;
     private String nombre;
     private String apellidos;
@@ -14,8 +15,6 @@ public class Cliente {
     public void setId(int id) {
         this.id = id;
     }
-    
-    
 
     public String getNombre() {
         return nombre;
@@ -48,7 +47,5 @@ public class Cliente {
     public void setBusqueda(String busqueda) {
         this.busqueda = busqueda;
     }
-
-    
 
 }

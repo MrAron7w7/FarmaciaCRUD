@@ -15,7 +15,7 @@ public class ConexionBD {
     private final String url = "jdbc:mysql://localhost:3306/farmaciaDB?serverTimezone=UTC";
 
     private final String USER = "root";
-    private final String PASSWORD = "mySql";
+    private final String PASSWORD = "";
 
     public Connection conectar() throws ClassNotFoundException {
         try {

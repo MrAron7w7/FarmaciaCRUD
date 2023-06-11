@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+
 public class ventanaPanelHorario extends javax.swing.JPanel {
 
     // Poner datos en tabla
@@ -24,6 +25,7 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
 
         // Definimos nuestro datos en la tabla
         DefaultTableModel model = new DefaultTableModel();
+        
         model.addColumn("Nombre");
         model.addColumn("Hora");
         tbeHorarios.setModel(model);
@@ -140,6 +142,11 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/actualizar.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
         btnActualizar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnActualizarMouseClicked(evt);
+            }
+        });
 
         btnGuardar.setBackground(new java.awt.Color(255, 255, 255));
         btnGuardar.setFont(new java.awt.Font("Fira Code", 0, 12)); // NOI18N
@@ -230,16 +237,6 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
-        /*ConsultaOperadores consulta = new ConsultaOperadores();
-        
-        String nombre = datosNombre.getText();
-        String hora = datosHora.getText();
-        
-        try {
-            consulta.consulta(nombre, hora);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ventanaPanelHorario.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
 
         // Agregamos y validamos los campos, si estan vacios o si ponen datos
         DaoOperadoresImpl operadores_dao = new DaoOperadoresImpl();
@@ -267,6 +264,14 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_btnGuardarMouseClicked
+
+    private void btnActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseClicked
+        try {
+            mostrar("operadores");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se pudo actualizar la lista");
+        }
+    }//GEN-LAST:event_btnActualizarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
