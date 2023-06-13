@@ -13,6 +13,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ventanaPanelVoucher extends javax.swing.JPanel {
 
@@ -56,7 +58,7 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
     }
 
-    public void mostrarDatos() throws ClassNotFoundException, SQLException {
+    /*  public void mostrarDatos() throws ClassNotFoundException, SQLException {
         ConexionBD con = new ConexionBD();
         Cliente cliente = new Cliente();
         try {
@@ -73,8 +75,7 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, e);
         }
 
-    }
-
+    }*/
     public ventanaPanelVoucher() throws ClassNotFoundException, SQLException {
         initComponents();
         //mostrarDatos();
@@ -237,15 +238,67 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
 
     private void btnBuscarVoucherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarVoucherMouseClicked
-        DaoVoucherImpl voucher_dao = new DaoVoucherImpl();
         Voucher voucher = new Voucher();
-        
-        voucher.setDni(Integer.parseInt(txtDniVoucher.getText()));
-        voucher_dao.buscar(voucher);
+        DaoVoucherImpl voucher_dao = new DaoVoucherImpl();
 
-        
+        try {
+            voucher.setDni(Integer.parseInt(txtDniVoucher.getText()));
+            voucher_dao.buscar(voucher);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Llene el campo a buscar", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_btnBuscarVoucherMouseClicked
 
+    private void buscarCliente(String s) throws ClassNotFoundException {
+        String sql = "SELECT * FROM clientes WHERE dni like '%" + s + "%'";
+        ConexionBD con = new ConexionBD();
+        
+        //Connection ConexionDB = con.conectar();
+
+        // Poner table editable o no editable
+        tbeVoucher.setEnabled(true);
+
+        // Defino el numero de columnas de la tabla voucher
+        DefaultTableModel model = new DefaultTableModel();
+
+        model.addColumn("DNI");
+        model.addColumn("Nombre");
+        model.addColumn("Compra");
+        //model.addColumn("Precio");
+
+        tbeVoucher.setModel(model);
+
+        // Vector de columnas de la tabla
+        String[] vouch = new String[3];
+        
+        Connection cn = null;
+        
+        PreparedStatement pst = null;
+        
+        ResultSet rs = null;
+
+        try {
+            
+            pst = con.conectar().prepareStatement(sql);
+            rs = pst.executeQuery(sql);
+            while (rs.next()) {
+                vouch[0] = rs.getString("dni");
+                vouch[1] = rs.getString("nombres");
+                vouch[2] = rs.getString("datos");
+                //vouch[3] = rs.getString(5);
+
+                model.addRow(vouch);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error" + e);
+        }
+
+        
+    }
     private void btnEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarMouseClicked
         try {
             eliminar();
@@ -266,7 +319,11 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
     }//GEN-LAST:event_btnActualizarMouseClicked
 
     private void txtDniVoucherKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDniVoucherKeyReleased
-
+        try {
+            buscarCliente(txtDniVoucher.getText());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ventanaPanelVoucher.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_txtDniVoucherKeyReleased
 
     public void eliminar() throws SQLException, ClassNotFoundException {
