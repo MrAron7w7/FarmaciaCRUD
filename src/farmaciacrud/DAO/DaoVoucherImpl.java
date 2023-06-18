@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 public class DaoVoucherImpl implements DaoVoucher {
 
     ConexionBD conexiondb = ConexionBD.getInstance();
-    
+
     @Override
     public void buscar(Voucher voucher) {
         ResultSet consulta;
@@ -22,21 +22,21 @@ public class DaoVoucherImpl implements DaoVoucher {
             PreparedStatement buscar = conectar.prepareStatement("SELECT * FROM clientes WHERE dni=?");
             buscar.setInt(1, voucher.getDni());
             consulta = buscar.executeQuery();
-            
+
             if (consulta.next()) {
                 JOptionPane.showMessageDialog(null, "Usuario encontrado");
-            }
-            else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Usuario no encontrado", "Error", JOptionPane.WARNING_MESSAGE);
+
             }
             // Cerrar conexion
             conexiondb.cerrarConexion();
-            
+
         } catch (SQLException e) {
             System.out.println("Error " + e.toString());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DaoVoucherImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }

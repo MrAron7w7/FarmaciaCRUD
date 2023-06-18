@@ -5,6 +5,7 @@ import farmaciacrud.DAO.DaoLoginImpl;
 import farmaciacrud.MetodosTrabajos.Login;
 import farmaciacrud.Ventanas.ventanaPrincipal;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
 public class CRUD extends javax.swing.JFrame {
 
     public CRUD() {
+        
         initComponents();
 
     }
@@ -146,24 +148,33 @@ public class CRUD extends javax.swing.JFrame {
 
     private void btnIniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarMouseClicked
         DaoLoginImpl login_dao = new DaoLoginImpl();
+        
         Login login = new Login();
 
         try {
             String contra = String.valueOf(datos_Pass.getText());
+
             login.setUser(datos_Usuario.getText());
+
             login.setPass(contra);
+
             if (login.getUser().equals("") && login.getPass().equals("")) {
+                
                 Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+                
                 JOptionPane.showMessageDialog(null, "Llene los campos", "Error", JOptionPane.WARNING_MESSAGE, wrong);
 
             } else {
+                
                 login_dao.validar(login);
                 validadInicio();
 
             }
 
-        } catch (Exception e) {
+        } catch (HeadlessException | ClassNotFoundException e) {
+            
             Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+            
             JOptionPane.showMessageDialog(null, "Llene los campos", "Error", JOptionPane.WARNING_MESSAGE, wrong);
         }
 
@@ -171,24 +182,39 @@ public class CRUD extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIniciarMouseClicked
 
     private void datos_UsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_datos_UsuarioMousePressed
+        
         if (datos_Usuario.getText().equals("Nombre de usuario")) {
+           
             datos_Usuario.setText("");
+           
             datos_Usuario.setForeground(Color.BLACK);
+       
         }
+        
         if (String.valueOf(datos_Pass.getPassword()).isEmpty()) {
+        
             datos_Pass.setText("************");
+       
             datos_Pass.setForeground(Color.GRAY);
+       
         }
 
     }//GEN-LAST:event_datos_UsuarioMousePressed
 
     private void datos_PassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_datos_PassMousePressed
+        
         if (String.valueOf(datos_Pass.getPassword()).equals("************")) {
+        
             datos_Pass.setText("");
+         
             datos_Pass.setForeground(Color.BLACK);
+        
         }
+        
         if (datos_Usuario.getText().isEmpty()) {
+         
             datos_Usuario.setText("Nombre de usuario");
+         
             datos_Usuario.setForeground(Color.GRAY);
         }
 
@@ -206,12 +232,18 @@ public class CRUD extends javax.swing.JFrame {
 
     // Metodos
     public void validadInicio() throws ClassNotFoundException {
+       
         // Muestra de icono en Joption
+        
         Icon usuarioLogin = new ImageIcon(getClass().getResource("usuarioLogin.png"));
+        
         JOptionPane.showMessageDialog(null, "Usuario iniciado con exito", "Sesion Valida", JOptionPane.WARNING_MESSAGE, usuarioLogin);
 
+       
         ventanaPrincipal principal = new ventanaPrincipal();
+       
         principal.setVisible(true);
+        
         this.dispose();
     }
 
