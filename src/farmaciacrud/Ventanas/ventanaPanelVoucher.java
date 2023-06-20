@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,8 +21,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ventanaPanelVoucher extends javax.swing.JPanel {
 
@@ -369,7 +373,11 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
     }//GEN-LAST:event_txtDniVoucherKeyReleased
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        reporte();
+        try {
+            reporte();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ventanaPanelVoucher.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1MouseClicked
 
     public void eliminar() throws SQLException, ClassNotFoundException {
@@ -404,22 +412,24 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
     }
 
-    public void reporte() {
+    public void reporte() throws ClassNotFoundException {
 
         Document documento = new Document();
 
         FileOutputStream archivo;
 
         File file;
-        
-        Date date = new Date();
+
+        DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+
+        //Date date = new Date();
+        String date = dateFormat.format(new Date());
 
         try {
-            
+
             /*
-            Creamos el encabezado del archivo PDF en la cual tendras los datos
-            */
-            
+            Creamos el encabezado del archivo PDF en la cual tendraslos datos
+             */
             file = new File("src/farmaciacrud/ReporteDeDatosPDF/Reporte.pdf");
 
             archivo = new FileOutputStream(file);
@@ -437,8 +447,11 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
             fecha.add(Chunk.NEWLINE);
 
-            fecha.add("Factura \n" + "Fecha: " + new SimpleDateFormat("dd-mm-yy").format(date) + "\n\n");
+            fecha.add("Factura \n" + "Fecha: " + date + "\n\n");
 
+            /*
+            Encabezado del PDF
+             */
             PdfPTable encabezado = new PdfPTable(4);
 
             encabezado.setWidthPercentage(100);
@@ -466,90 +479,108 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             encabezado.addCell(fecha);
 
             documento.add(encabezado);
-            
-            /*
-            
-            */
-            
-            Paragraph cliente = new Paragraph();
-            
-            cliente.add(Chunk.NEWLINE);
-            
-            cliente.add("Datos del cliente" + "\n\n");
-            
-            documento.add(cliente);
-            
+
             // Creamos otra tabla para obtener los datos del cliente
-            
             PdfPTable tablaClient = new PdfPTable(4);
-            
+
             tablaClient.setWidthPercentage(100);
-            
+
             tablaClient.getDefaultCell().setBorder(0);
-            
-            float[] columnClient = new float[]{20f, 50f, 30f, 40f};
-            
+
+            float[] columnClient = new float[]{25f, 25f, 25f, 25f};
+            //20f, 50f, 30f, 40f
             tablaClient.setWidths(columnClient);
-            
+
             tablaClient.setHorizontalAlignment(Element.ALIGN_LEFT);
-            
+
             // Agregamos los titulos en celdas
-            
             PdfPCell cl1 = new PdfPCell(new Phrase("DNI", negrita));
-            
+
             PdfPCell cl2 = new PdfPCell(new Phrase("Nombre", negrita));
-            
-            PdfPCell cl3= new PdfPCell(new Phrase("Apellido", negrita));
-            
+
+            PdfPCell cl3 = new PdfPCell(new Phrase("Apellido", negrita));
+
             PdfPCell cl4 = new PdfPCell(new Phrase("Compra", negrita));
-            
+
             cl1.setBorder(0);
-            
+
             cl2.setBorder(0);
-            
+
             cl3.setBorder(0);
-            
+
             cl4.setBorder(0);
-            
+
             // Agregamos la celda a la tabla
-            
             tablaClient.addCell(cl1);
-            
+
             tablaClient.addCell(cl2);
-            
+
             tablaClient.addCell(cl3);
-            
+
             tablaClient.addCell(cl4);
-            
-            documento.add(tablaClient);
-            
+
+            // Agregamos los datos de la base de datos
+            try {
+                ConexionBD cn = ConexionBD.getInstance();
+
+                int fila = tbeVoucher.getSelectedRow();
+
+                String iden = tbeVoucher.getValueAt(fila, 0).toString();
+
+                String sql = "SELECT * FROM clientes WHERE dni=" + iden;
+
+                PreparedStatement pst = cn.conectar().prepareStatement(sql);
+
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+
+                    do {
+
+                        tablaClient.addCell(rs.getString(4));
+
+                        tablaClient.addCell(rs.getString(2));
+
+                        tablaClient.addCell(rs.getString(3));
+
+                        tablaClient.addCell(rs.getString(5));
+
+                    } while (rs.next());
+
+                    documento.add(tablaClient);
+
+                }
+
+            } catch (SQLException e) {
+
+                System.out.println("error" + e);
+
+            }
+
             // Agregamos el total a pagar
             
             Paragraph total = new Paragraph();
-            
-            total.add("Total a pagar: " );
-            
+
+            total.add("\nTotal a pagar: ");
+
             total.setAlignment(Element.ALIGN_RIGHT);
-            
+
             documento.add(total);
-            
+
             // Agregamos un mensaje al final de todo
-            
             Paragraph mensaje = new Paragraph();
-            
+
             mensaje.add("Gracias por su compra :)");
-            
+
             mensaje.setAlignment(Element.ALIGN_CENTER);
-            
+
             documento.add(mensaje);
-            
+
             documento.close();
 
             archivo.close();
-            
+
             JOptionPane.showMessageDialog(null, "Reporte exitoso");
-            
-            
 
         } catch (DocumentException | HeadlessException | IOException e) {
             System.out.println(e.toString());
