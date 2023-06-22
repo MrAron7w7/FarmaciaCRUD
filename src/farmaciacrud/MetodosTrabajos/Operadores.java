@@ -5,7 +5,16 @@ public class Operadores {
     private int id;
     private String nombreOperadores;
     private String hora;
-
+    
+    
+    public Operadores(){
+        
+    }
+    public Operadores(String nombreOperadores, String hora) {
+        this.nombreOperadores = nombreOperadores;
+        this.hora = hora;
+    }
+    
     public int getId() {
         return id;
     }

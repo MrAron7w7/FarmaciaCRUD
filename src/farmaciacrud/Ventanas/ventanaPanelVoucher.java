@@ -488,19 +488,19 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             tablaClient.getDefaultCell().setBorder(0);
 
             float[] columnClient = new float[]{25f, 25f, 25f, 25f};
-            //20f, 50f, 30f, 40f
+            
             tablaClient.setWidths(columnClient);
 
             tablaClient.setHorizontalAlignment(Element.ALIGN_LEFT);
 
             // Agregamos los titulos en celdas
-            PdfPCell cl1 = new PdfPCell(new Phrase("DNI", negrita));
+            PdfPCell cl1 = new PdfPCell(new Phrase("\nDNI", negrita));
 
-            PdfPCell cl2 = new PdfPCell(new Phrase("Nombre", negrita));
+            PdfPCell cl2 = new PdfPCell(new Phrase("\nNombre", negrita));
 
-            PdfPCell cl3 = new PdfPCell(new Phrase("Apellido", negrita));
+            PdfPCell cl3 = new PdfPCell(new Phrase("\nApellido", negrita));
 
-            PdfPCell cl4 = new PdfPCell(new Phrase("Compra", negrita));
+            PdfPCell cl4 = new PdfPCell(new Phrase("\nCompra", negrita));
 
             cl1.setBorder(0);
 
@@ -553,7 +553,7 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
             } catch (SQLException e) {
 
-                System.out.println("error" + e);
+                System.out.println("error: " + e);
 
             }
 
@@ -570,7 +570,9 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             // Agregamos un mensaje al final de todo
             Paragraph mensaje = new Paragraph();
 
-            mensaje.add("Gracias por su compra :)");
+            mensaje.add("\n\n¡Gracias por su compra!\n" +
+                                "\n" +
+                        "Si necesita asistencia adicional, por favor comuníquese con nosotros al número de teléfono proporcionado.");
 
             mensaje.setAlignment(Element.ALIGN_CENTER);
 

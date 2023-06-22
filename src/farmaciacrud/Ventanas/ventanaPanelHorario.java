@@ -1,58 +1,49 @@
 package farmaciacrud.Ventanas;
 
-import farmaciacrud.Conexion.ConexionBD;
 import farmaciacrud.DAO.DaoOperadoresImpl;
 import farmaciacrud.MetodosTrabajos.Operadores;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
+import java.awt.HeadlessException;
+import java.text.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 
 public class ventanaPanelHorario extends javax.swing.JPanel {
 
-    // Poner datos en tabla
-    public void mostrar(String tabla) throws ClassNotFoundException {
-        //Nos conectamos con la base de datos
-        ConexionBD con = new ConexionBD();
-        String sql = "SELECT * FROM " + tabla;
-        Statement st;
-        Connection ConexionBD = con.conectar();
-
-        // Definimos nuestro datos en la tabla
-        DefaultTableModel model = new DefaultTableModel();
+    private void mostrarDatos() {
         
-        model.addColumn("Nombre");
-        model.addColumn("Hora");
-        tbeHorarios.setModel(model);
+        String[] tituloColumna = {"Nombre", "Hora"};
+
+        DefaultTableModel model = new DefaultTableModel(tituloColumna, 0);
         
-        // Poner tabla editable o no editable
-        tbeHorarios.setEnabled(false);
+        DaoOperadoresImpl dao = new DaoOperadoresImpl();
 
-        // Vector de columnas
-        String[] datos = new String[2];
+        List<Operadores> datosOperadores;
 
-        try {
-            st = ConexionBD.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) { // Si exite sigue
-                datos[0] = rs.getString(2); // Traemos la segunda columna de base mysql
-                datos[1] = rs.getString(3); // Traemos la tercera columna de base mysql
-                model.addRow(datos); // Añadimos el modelo los datos
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error: " + e);
+        Object[] columna = new Object[2];
+
+        datosOperadores = dao.seleccionar();
+
+        for (Operadores fila : datosOperadores) {
+
+            columna[0] = fila.getNombreOperadores();
+
+            columna[1] = fila.getHora();
+
+            model.addRow(columna);
         }
 
+        tbeHorarios.setEnabled(false);
+        
+        this.tbeHorarios.setModel(model);
     }
 
     public ventanaPanelHorario() throws ClassNotFoundException {
+
         initComponents();
-        mostrar("operadores");
+
+        mostrarDatos();
     }
 
     @SuppressWarnings("unchecked")
@@ -64,8 +55,6 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        datosHora = new javax.swing.JTextField();
         datosNombre = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbeHorarios = new javax.swing.JTable();
@@ -93,16 +82,9 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Control de asistencia");
 
-        jLabel2.setFont(new java.awt.Font("Fira Code", 0, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Roboto", 0, 19)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Nombre:");
-
-        jLabel3.setFont(new java.awt.Font("Fira Code", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("Hora:");
-
-        datosHora.setBackground(new java.awt.Color(255, 255, 255));
-        datosHora.setFont(new java.awt.Font("Fira Code", 0, 14)); // NOI18N
 
         datosNombre.setBackground(new java.awt.Color(255, 255, 255));
         datosNombre.setFont(new java.awt.Font("Fira Code", 0, 14)); // NOI18N
@@ -168,60 +150,46 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(datosHora, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                            .addComponent(datosNombre))
-                        .addGap(72, 72, 72)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48)
-                        .addComponent(btnActualizar))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 608, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(185, 185, 185)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(6, 6, 6)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(127, 127, 127)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(25, 25, 25)
+                                .addComponent(datosNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnActualizar))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 608, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(29, 29, 29))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
+                        .addGap(8, 8, 8)
                         .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(datosNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(datosHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnGuardar)
-                            .addComponent(btnActualizar))
-                        .addGap(38, 38, 38)))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-                .addContainerGap())
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnActualizar)
+                    .addComponent(datosNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(14, 14, 14)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -240,48 +208,67 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
 
         // Agregamos y validamos los campos, si estan vacios o si ponen datos
         DaoOperadoresImpl operadores_dao = new DaoOperadoresImpl();
+
         Operadores operadores = new Operadores();
-
+        
+        //DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        
+        //String date = dateFormat.format(Calendar.getInstance().getTime());
+        
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm aa");
+        
+        String date = dateFormat.format(new Date());
+        
         try {
-            operadores.setNombreOperadores(datosNombre.getText().trim());
-            operadores.setHora(datosHora.getText().trim());
 
-            if (operadores.getNombreOperadores().length() > 0 && operadores.getHora().length() > 0) {
-                operadores_dao.registrarOperadores(operadores);
-                mostrar("operadores");
-                Icon check = new ImageIcon(getClass().getResource("check.png"));
-                JOptionPane.showMessageDialog(null, "Guardado con exito", "Valido", JOptionPane.WARNING_MESSAGE, check);
-                datosNombre.setText("");
-                datosHora.setText("");
-            } else {
+            operadores.setNombreOperadores(datosNombre.getText().trim());
+
+            operadores.setHora(date);
+
+            if (operadores.getNombreOperadores().equals("")) {
+
                 Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
-                JOptionPane.showMessageDialog(null, "Los datos no fueron guardados", "invalido", JOptionPane.WARNING_MESSAGE, wrong);
+
+                JOptionPane.showMessageDialog(null, "Rellene el campo", "invalido", JOptionPane.WARNING_MESSAGE, wrong);
+                
+                datosNombre.setText("");
+
+            } else {
+
+                operadores_dao.registrarOperadores(operadores);
+
+                //mostrarDatos();
+                Icon check = new ImageIcon(getClass().getResource("check.png"));
+
+                JOptionPane.showMessageDialog(null, "Guardado con exito", "Valido", JOptionPane.WARNING_MESSAGE, check);
+
+                datosNombre.setText("");
+
             }
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
+
             Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+
             JOptionPane.showMessageDialog(null, "Falta rellenar campos", "Invalido", JOptionPane.WARNING_MESSAGE, wrong);
         }
-
 
     }//GEN-LAST:event_btnGuardarMouseClicked
 
     private void btnActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseClicked
-        try {
-            mostrar("operadores");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "No se pudo actualizar la lista");
-        }
+
+        mostrarDatos();
+
+        datosNombre.setText("");
+
     }//GEN-LAST:event_btnActualizarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JTextField datosHora;
     private javax.swing.JTextField datosNombre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
