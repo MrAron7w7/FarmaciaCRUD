@@ -8,8 +8,10 @@ public interface DaoOperadores {
     
     //public void registrarOperadores(Operadores operadores);
     
-    public boolean registrarOperadores(Object operadors);
+    public boolean registrarOperadores(Object operadores);
     
     public List<?> seleccionar();
+    
+    public boolean eliminar(String filaELiminar);
     
 }

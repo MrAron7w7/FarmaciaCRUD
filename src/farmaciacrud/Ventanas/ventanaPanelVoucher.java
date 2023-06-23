@@ -1,33 +1,28 @@
 package farmaciacrud.Ventanas;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 import farmaciacrud.Conexion.ConexionBD;
 import farmaciacrud.DAO.DaoVoucherImpl;
+import farmaciacrud.MetodosTrabajos.Cliente;
+import farmaciacrud.MetodosTrabajos.Operadores;
 import farmaciacrud.MetodosTrabajos.Voucher;
 import java.awt.HeadlessException;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
+import java.io.*;
+import java.sql.*;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.sql.PreparedStatement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.text.*;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 
 public class ventanaPanelVoucher extends javax.swing.JPanel {
+
+    // Imagenes predeterminadas en el sistema
+    private final Icon check = new ImageIcon(getClass().getResource("check.png"));
+
+    private final Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
 
     public void mostrar(String tabla) throws ClassNotFoundException {
 
@@ -77,7 +72,7 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
         } catch (SQLException e) {
 
-            JOptionPane.showMessageDialog(null, "Error" + e);
+            System.out.println("¡Error!" + e.toString());
 
         }
 
@@ -227,15 +222,15 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
+                        .addGap(32, 32, 32)
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(txtDniVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnBuscarVoucher))
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtDniVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscarVoucher))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
@@ -271,13 +266,46 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
             voucher.setDni(Integer.parseInt(txtDniVoucher.getText()));
 
-            voucher_dao.buscar(voucher);
+            if (voucher_dao.buscar(voucher)) {
 
-            buscarCliente(txtDniVoucher.getText());
+                JOptionPane.showMessageDialog(null, "Usuario encontrado", "Exito", JOptionPane.WARNING_MESSAGE, check);
 
-        } catch (ClassNotFoundException | NumberFormatException e) {
+                String[] tituloCOlumna = {"DNI", "Nombre", "Compra"};
 
-            JOptionPane.showMessageDialog(null, "Llene el campo a buscar", "Error", JOptionPane.WARNING_MESSAGE);
+                DefaultTableModel model = new DefaultTableModel(tituloCOlumna, 0);
+
+                List<Cliente> datosClientes;
+
+                Object[] columna = new Object[3];
+
+                datosClientes = (List<Cliente>) voucher_dao.mostrar();
+
+                for (Cliente fila : datosClientes) {
+
+                    columna[0] = fila.getDni();
+
+                    columna[1] = fila.getNombre();
+
+                    columna[2] = fila.getBusqueda();
+
+                    model.addRow(columna);
+
+                }
+                tbeVoucher.setEnabled(true);
+                
+                this.tbeVoucher.setModel(model);
+                
+                //buscarCliente(txtDniVoucher.getText());
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, "Usuario no encontrado", "¡Error!", JOptionPane.WARNING_MESSAGE, wrong);
+
+            }
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(null, "Llene el campo a buscar", "Error", JOptionPane.WARNING_MESSAGE, wrong);
 
         }
 
@@ -335,21 +363,33 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
         } catch (SQLException e) {
 
-            JOptionPane.showMessageDialog(null, "Error" + e);
+            JOptionPane.showMessageDialog(null, "Error" + e.toString());
 
         }
 
     }
     private void btnEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarMouseClicked
+        DaoVoucherImpl dao = new DaoVoucherImpl();
+
         try {
 
-            eliminar();
-        } catch (ClassNotFoundException | SQLException e) {
+            int fila = tbeVoucher.getSelectedRow();
 
-            Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+            String identidad = tbeVoucher.getValueAt(fila, 0).toString();
 
-            JOptionPane.showMessageDialog(null, "No ha escogido un dato a eliminar", "Error", JOptionPane.WARNING_MESSAGE, wrong);
+            if (dao.eliminar(identidad)) {
 
+                JOptionPane.showMessageDialog(null, "Fila eliminada con exito", "Valido", JOptionPane.WARNING_MESSAGE, check);
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, "La fila no fue eliminada", "invalido", JOptionPane.WARNING_MESSAGE, wrong);
+
+            }
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, "Seleccione una fila a eliminar", "¡Error!", JOptionPane.WARNING_MESSAGE, wrong);
         }
 
 
@@ -364,7 +404,7 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
         } catch (ClassNotFoundException e) {
 
-            JOptionPane.showMessageDialog(null, "Error no se pudo actualizar los datos");
+            JOptionPane.showMessageDialog(null, "Error no se pudo actualizar los datos", "¡Error!", JOptionPane.WARNING_MESSAGE, wrong);
         }
     }//GEN-LAST:event_btnActualizarMouseClicked
 
@@ -374,43 +414,15 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         try {
+
             reporte();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ventanaPanelVoucher.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, "No se guardo el reporte", "¡Error!", JOptionPane.WARNING_MESSAGE, wrong);
+
         }
     }//GEN-LAST:event_jButton1MouseClicked
-
-    public void eliminar() throws SQLException, ClassNotFoundException {
-
-        ConexionBD con = ConexionBD.getInstance();
-
-        int fila = tbeVoucher.getSelectedRow();
-
-        String identidad = tbeVoucher.getValueAt(fila, 0).toString();
-
-        String sql = "DELETE FROM clientes WHERE dni=" + identidad;
-
-        try {
-
-            PreparedStatement eliminar = con.conectar().prepareStatement(sql);
-
-            eliminar.executeUpdate();
-
-            if (eliminar.executeUpdate() > 0) {
-
-                JOptionPane.showMessageDialog(null, "Dato eliminado con exito");
-
-            }
-
-            mostrar("clientes");
-
-        } catch (SQLException e) {
-
-            JOptionPane.showMessageDialog(null, "Error " + e);
-
-        }
-
-    }
 
     public void reporte() throws ClassNotFoundException {
 
@@ -488,7 +500,7 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             tablaClient.getDefaultCell().setBorder(0);
 
             float[] columnClient = new float[]{25f, 25f, 25f, 25f};
-            
+
             tablaClient.setWidths(columnClient);
 
             tablaClient.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -558,7 +570,6 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             }
 
             // Agregamos el total a pagar
-            
             Paragraph total = new Paragraph();
 
             total.add("\nTotal a pagar: ");
@@ -570,9 +581,9 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             // Agregamos un mensaje al final de todo
             Paragraph mensaje = new Paragraph();
 
-            mensaje.add("\n\n¡Gracias por su compra!\n" +
-                                "\n" +
-                        "Si necesita asistencia adicional, por favor comuníquese con nosotros al número de teléfono proporcionado.");
+            mensaje.add("\n\n¡Gracias por su compra!\n"
+                    + "\n"
+                    + "Si necesita asistencia adicional, por favor comuníquese con nosotros al número de teléfono proporcionado.");
 
             mensaje.setAlignment(Element.ALIGN_CENTER);
 

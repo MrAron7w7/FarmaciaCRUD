@@ -22,11 +22,11 @@ public class DaoOperadoresImpl implements DaoOperadores {
     List<Operadores> data = new ArrayList<>();
 
     @Override
-    public boolean registrarOperadores(Object operadors) {
+    public boolean registrarOperadores(Object operadores) {
 
         int filas;
 
-        this.operadores = (Operadores) operadors;
+        this.operadores = (Operadores) operadores;
 
         this.sql = "INSERT INTO operadores(nombre,hora) VALUES(?,?)";
 
@@ -110,6 +110,40 @@ public class DaoOperadoresImpl implements DaoOperadores {
         }
 
         return this.data;
+    }
+
+    @Override
+    public boolean eliminar(String filaEliminar) {
+
+        this.sql = "DELETE FROM operadores WHERE nombre='" + filaEliminar + "'";
+
+        int seleccionELiminar;
+
+        try {
+
+            this.cn = conector.conectar();
+
+            this.pst = cn.prepareStatement(this.sql);
+
+            //this.pst.setString(1, filaEliminar);
+            seleccionELiminar = this.pst.executeUpdate();
+
+            if (seleccionELiminar > 0) {
+
+                return true;
+
+            } else {
+
+                return false;
+
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+
+            System.out.println("¡Error!: " + e.toString());
+
+            return false;
+        }
     }
 
 }

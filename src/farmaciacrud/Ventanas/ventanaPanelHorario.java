@@ -6,17 +6,20 @@ import java.awt.HeadlessException;
 import java.text.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class ventanaPanelHorario extends javax.swing.JPanel {
 
+    private final Icon check = new ImageIcon(getClass().getResource("check.png"));
+
+    private final Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+
     private void mostrarDatos() {
-        
+
         String[] tituloColumna = {"Nombre", "Hora"};
 
         DefaultTableModel model = new DefaultTableModel(tituloColumna, 0);
-        
+
         DaoOperadoresImpl dao = new DaoOperadoresImpl();
 
         List<Operadores> datosOperadores;
@@ -34,8 +37,8 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
             model.addRow(columna);
         }
 
-        tbeHorarios.setEnabled(false);
-        
+        tbeHorarios.setEnabled(true);
+
         this.tbeHorarios.setModel(model);
     }
 
@@ -62,6 +65,7 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         btnGuardar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        btnEliminar = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -120,7 +124,7 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         jScrollPane2.setViewportView(tbeHorarios);
 
         btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
-        btnActualizar.setFont(new java.awt.Font("Fira Code", 0, 12)); // NOI18N
+        btnActualizar.setFont(new java.awt.Font("Fira Code", 1, 12)); // NOI18N
         btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/actualizar.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
         btnActualizar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -131,7 +135,7 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         });
 
         btnGuardar.setBackground(new java.awt.Color(255, 255, 255));
-        btnGuardar.setFont(new java.awt.Font("Fira Code", 0, 12)); // NOI18N
+        btnGuardar.setFont(new java.awt.Font("Fira Code", 1, 12)); // NOI18N
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/guardar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -145,12 +149,21 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/hora.png"))); // NOI18N
 
+        btnEliminar.setFont(new java.awt.Font("Fira Code", 1, 12)); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/eliminar.png"))); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEliminarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(185, 185, 185)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -159,18 +172,21 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel2)
+                        .addGap(26, 26, 26)
+                        .addComponent(datosNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnActualizar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(25, 25, 25)
-                                .addComponent(datosNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnActualizar))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 608, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(29, 29, 29))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 608, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEliminar)))
+                .addGap(32, 32, 32))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,14 +198,18 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
                         .addGap(8, 8, 8)
                         .addComponent(jLabel1))
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnActualizar)
-                    .addComponent(datosNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(14, 14, 14)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(datosNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnGuardar)
+                        .addComponent(btnActualizar)))
+                .addGap(11, 11, 11)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminar)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -210,15 +230,13 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         DaoOperadoresImpl operadores_dao = new DaoOperadoresImpl();
 
         Operadores operadores = new Operadores();
-        
+
         //DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        
         //String date = dateFormat.format(Calendar.getInstance().getTime());
-        
         DateFormat dateFormat = new SimpleDateFormat("HH:mm aa");
-        
+
         String date = dateFormat.format(new Date());
-        
+
         try {
 
             operadores.setNombreOperadores(datosNombre.getText().trim());
@@ -227,10 +245,8 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
 
             if (operadores.getNombreOperadores().equals("")) {
 
-                Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
-
                 JOptionPane.showMessageDialog(null, "Rellene el campo", "invalido", JOptionPane.WARNING_MESSAGE, wrong);
-                
+
                 datosNombre.setText("");
 
             } else {
@@ -238,16 +254,12 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
                 operadores_dao.registrarOperadores(operadores);
 
                 //mostrarDatos();
-                Icon check = new ImageIcon(getClass().getResource("check.png"));
-
                 JOptionPane.showMessageDialog(null, "Guardado con exito", "Valido", JOptionPane.WARNING_MESSAGE, check);
 
                 datosNombre.setText("");
 
             }
         } catch (HeadlessException e) {
-
-            Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
 
             JOptionPane.showMessageDialog(null, "Falta rellenar campos", "Invalido", JOptionPane.WARNING_MESSAGE, wrong);
         }
@@ -262,9 +274,40 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnActualizarMouseClicked
 
+    private void btnEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarMouseClicked
+
+        DaoOperadoresImpl dao = new DaoOperadoresImpl();
+
+        try {
+
+            int fila = tbeHorarios.getSelectedRow();
+
+            String selecion = tbeHorarios.getValueAt(
+                    fila, 0).toString();
+
+            if (dao.eliminar(selecion)) {
+
+                JOptionPane.showMessageDialog(null, "Selección eliminada", "¡Valido!", JOptionPane.WARNING_MESSAGE, check);
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, "No se pudo eliminar", "¡Error!", JOptionPane.WARNING_MESSAGE, wrong);
+
+            }
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, "Debe selecionar una fila a eliminar", "¡Error!", JOptionPane.WARNING_MESSAGE, wrong);
+
+        }
+
+
+    }//GEN-LAST:event_btnEliminarMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JTextField datosNombre;
     private javax.swing.JLabel jLabel1;

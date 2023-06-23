@@ -8,6 +8,27 @@ public class Cliente {
     private int dni;
     private String busqueda;
 
+    public Cliente() {
+
+    }
+
+    public Cliente(int id, String nombre, String apellidos, int dni, String busqueda) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.dni = dni;
+        this.busqueda = busqueda;
+    }
+
+    public Cliente(String nombre, String apellidos, int dni, String busqueda) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.dni = dni;
+        this.busqueda = busqueda;
+    }
+    
+    
+
     public int getId() {
         return id;
     }

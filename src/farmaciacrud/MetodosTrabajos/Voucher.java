@@ -8,6 +8,11 @@ public class Voucher {
         
     }
 
+    public Voucher(int dni) {
+        this.dni = dni;
+    }
+    
+
     public int getDni() {
         return dni;
     }
