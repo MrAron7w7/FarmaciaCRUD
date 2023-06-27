@@ -37,6 +37,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         content = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         setResizable(false);
 
         background_Datos.setBackground(new java.awt.Color(255, 255, 255));

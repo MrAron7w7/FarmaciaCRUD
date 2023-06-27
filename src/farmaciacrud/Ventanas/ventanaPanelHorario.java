@@ -47,6 +47,7 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         initComponents();
 
         mostrarDatos();
+        
     }
 
     @SuppressWarnings("unchecked")
