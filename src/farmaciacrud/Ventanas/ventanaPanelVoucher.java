@@ -24,13 +24,13 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
     private final Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
 
-    public void mostrar(String tabla) throws ClassNotFoundException {
+    public void  mostrar() throws ClassNotFoundException {
 
         ConexionBD con = new ConexionBD();
 
         Statement st;
 
-        String sql = "Select * FROM " + tabla;
+        String sql = "SELECT * FROM clientes";
 
         Connection ConexionDB = con.conectar();
 
@@ -45,12 +45,13 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
         model.addColumn("Nombre");
 
         model.addColumn("Compra");
-        //model.addColumn("Precio");
+        
+        model.addColumn("Precio");
 
         tbeVoucher.setModel(model);
 
         // Vector de columnas de la tabla
-        String[] vouch = new String[3];
+        String[] vouch = new String[4];
 
         try {
 
@@ -60,12 +61,13 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
             while (rs.next()) {
 
-                vouch[0] = rs.getString(4);
+                vouch[0] = rs.getString("dni");
 
-                vouch[1] = rs.getString(2);
+                vouch[1] = rs.getString("nombres");
 
-                vouch[2] = rs.getString(5);
-                //vouch[3] = rs.getString(5);
+                vouch[2] = rs.getString("datos");
+                
+                vouch[3] = rs.getString("Precioo");
 
                 model.addRow(vouch);
             }
@@ -81,7 +83,7 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
     public ventanaPanelVoucher() throws ClassNotFoundException, SQLException {
         initComponents();
 
-        mostrar("clientes");
+        mostrar();
 
     }
 
@@ -116,12 +118,10 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setFont(new java.awt.Font("Abyssinica SIL", 1, 20)); // NOI18N
         jLabel1.setText("Busqueda por DNI:");
 
-        txtDniVoucher.setBackground(new java.awt.Color(255, 255, 255));
-        txtDniVoucher.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        txtDniVoucher.setFont(new java.awt.Font("Abyssinica SIL", 0, 16)); // NOI18N
         txtDniVoucher.setForeground(new java.awt.Color(51, 51, 51));
         txtDniVoucher.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -129,17 +129,18 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             }
         });
 
-        btnBuscarVoucher.setBackground(new java.awt.Color(42, 166, 67));
-        btnBuscarVoucher.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        btnBuscarVoucher.setForeground(new java.awt.Color(255, 255, 255));
+        btnBuscarVoucher.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        btnBuscarVoucher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/buscar.png"))); // NOI18N
         btnBuscarVoucher.setText("Buscar");
+        btnBuscarVoucher.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnBuscarVoucher.setIconTextGap(5);
         btnBuscarVoucher.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnBuscarVoucherMouseClicked(evt);
             }
         });
 
-        tbeVoucher.setBackground(new java.awt.Color(255, 255, 255));
+        tbeVoucher.setFont(new java.awt.Font("Abyssinica SIL", 0, 15)); // NOI18N
         tbeVoucher.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -169,27 +170,28 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
         tbeVoucher.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane2.setViewportView(tbeVoucher);
 
-        btnEliminar.setBackground(new java.awt.Color(255, 51, 51));
-        btnEliminar.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setFont(new java.awt.Font("Carlito", 1, 14)); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/eliminar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
+        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnEliminar.setIconTextGap(5);
         btnEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnEliminarMouseClicked(evt);
             }
         });
 
-        btnActualizar.setBackground(new java.awt.Color(102, 102, 255));
-        btnActualizar.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizar.setFont(new java.awt.Font("Carlito", 1, 14)); // NOI18N
+        btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/actualizar.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
+        btnActualizar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnActualizar.setIconTextGap(5);
         btnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnActualizarMouseClicked(evt);
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/pdf2.png"))); // NOI18N
         jButton1.setBorder(null);
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -204,34 +206,31 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtDniVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscarVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 648, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnEliminar)
                         .addGap(18, 18, 18)
                         .addComponent(btnActualizar)
-                        .addGap(335, 335, 335)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtDniVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnBuscarVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 648, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(82, 82, 82))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDniVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscarVoucher))))
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDniVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscarVoucher)
+                    .addComponent(jLabel1))
+                .addGap(24, 24, 24)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,13 +269,13 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
                 JOptionPane.showMessageDialog(null, "Usuario encontrado", "Exito", JOptionPane.WARNING_MESSAGE, check);
 
-                String[] tituloCOlumna = {"DNI", "Nombre", "Compra"};
+                String[] tituloCOlumna = {"DNI", "Nombre", "Compra", "Precio"};
 
                 DefaultTableModel model = new DefaultTableModel(tituloCOlumna, 0);
 
                 List<Cliente> datosClientes;
 
-                Object[] columna = new Object[3];
+                Object[] columna = new Object[4];
 
                 datosClientes = (List<Cliente>) voucher_dao.mostrar();
 
@@ -287,16 +286,17 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
                     columna[1] = fila.getNombre();
 
                     columna[2] = fila.getBusqueda();
+                    
+                    columna[3] = fila.getPrecio();
 
                     model.addRow(columna);
 
                 }
                 tbeVoucher.setEnabled(true);
-                
-                this.tbeVoucher.setModel(model);
-                
-                //buscarCliente(txtDniVoucher.getText());
 
+                this.tbeVoucher.setModel(model);
+
+                //buscarCliente(txtDniVoucher.getText());
             } else {
 
                 JOptionPane.showMessageDialog(null, "Usuario no encontrado", "¡Error!", JOptionPane.WARNING_MESSAGE, wrong);
@@ -312,62 +312,6 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnBuscarVoucherMouseClicked
 
-    private void buscarCliente(String s) throws ClassNotFoundException {
-
-        String sql = "SELECT * FROM clientes WHERE dni like '%" + s + "%'";
-
-        ConexionBD con = new ConexionBD();
-
-        //Connection ConexionDB = con.conectar();
-        // Poner table editable o no editable
-        tbeVoucher.setEnabled(true);
-
-        // Defino el numero de columnas de la tabla voucher
-        DefaultTableModel model = new DefaultTableModel();
-
-        model.addColumn("DNI");
-
-        model.addColumn("Nombre");
-
-        model.addColumn("Compra");
-        //model.addColumn("Precio");
-
-        tbeVoucher.setModel(model);
-
-        // Vector de columnas de la tabla
-        String[] vouch = new String[3];
-
-        //Connection cn;
-        PreparedStatement pst;
-
-        ResultSet rs;
-
-        try {
-
-            pst = con.conectar().prepareStatement(sql);
-
-            rs = pst.executeQuery(sql);
-
-            while (rs.next()) {
-
-                vouch[0] = rs.getString("dni");
-
-                vouch[1] = rs.getString("nombres");
-
-                vouch[2] = rs.getString("datos");
-                //vouch[3] = rs.getString(5);
-
-                model.addRow(vouch);
-
-            }
-
-        } catch (SQLException e) {
-
-            JOptionPane.showMessageDialog(null, "Error" + e.toString());
-
-        }
-
-    }
     private void btnEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarMouseClicked
         DaoVoucherImpl dao = new DaoVoucherImpl();
 
@@ -398,7 +342,7 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
     private void btnActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseClicked
         try {
 
-            mostrar("clientes");
+            mostrar();
 
             txtDniVoucher.setText("");
 
@@ -418,8 +362,9 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             reporte();
 
         } catch (Exception e) {
-
-            JOptionPane.showMessageDialog(null, "No se guardo el reporte", "¡Error!", JOptionPane.WARNING_MESSAGE, wrong);
+            
+            System.out.println(e.toString());
+            //JOptionPane.showMessageDialog(null, "No se guardo el reporte", "¡Error!", JOptionPane.WARNING_MESSAGE, wrong);
 
         }
     }//GEN-LAST:event_jButton1MouseClicked
@@ -549,13 +494,13 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
 
                     do {
 
-                        tablaClient.addCell(rs.getString(4));
+                        tablaClient.addCell(rs.getString("dni"));
 
-                        tablaClient.addCell(rs.getString(2));
+                        tablaClient.addCell(rs.getString("nombres"));
 
-                        tablaClient.addCell(rs.getString(3));
+                        tablaClient.addCell(rs.getString("apellidos"));
 
-                        tablaClient.addCell(rs.getString(5));
+                        tablaClient.addCell(rs.getString("datos"));
 
                     } while (rs.next());
 
@@ -572,7 +517,11 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             // Agregamos el total a pagar
             Paragraph total = new Paragraph();
 
-            total.add("\nTotal a pagar: ");
+            int fila = tbeVoucher.getSelectedRow();
+
+            String ident = tbeVoucher.getValueAt(fila, 3).toString();
+
+            total.add("\nTotal a pagar: " + ident);
 
             total.setAlignment(Element.ALIGN_RIGHT);
 

@@ -7,24 +7,27 @@ public class Cliente {
     private String apellidos;
     private int dni;
     private String busqueda;
+    private double precio;
 
     public Cliente() {
 
     }
 
-    public Cliente(int id, String nombre, String apellidos, int dni, String busqueda) {
+    public Cliente(int id, String nombre, String apellidos, int dni, String busqueda ){
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.dni = dni;
         this.busqueda = busqueda;
+        
     }
 
-    public Cliente(String nombre, String apellidos, int dni, String busqueda) {
+    public Cliente(String nombre, String apellidos, int dni, String busqueda, double precio) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.dni = dni;
         this.busqueda = busqueda;
+        this.precio = precio;
     }
     
     
@@ -68,5 +71,15 @@ public class Cliente {
     public void setBusqueda(String busqueda) {
         this.busqueda = busqueda;
     }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+    
+    
 
 }

@@ -30,7 +30,6 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnDatos = new javax.swing.JButton();
         btnVoucher = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         dayText = new javax.swing.JLabel();
@@ -42,16 +41,16 @@ public class ventanaPrincipal extends javax.swing.JFrame {
 
         background_Datos.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel3.setBackground(new java.awt.Color(0, 102, 204));
+        jPanel3.setBackground(new java.awt.Color(51, 153, 255));
 
-        jLabel2.setFont(new java.awt.Font("Roboto Medium", 0, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Bitstream Charter", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Usuario");
 
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
 
         btnSalir.setBackground(new java.awt.Color(51, 153, 255));
-        btnSalir.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        btnSalir.setFont(new java.awt.Font("Roboto", 1, 19)); // NOI18N
         btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/Salida.png"))); // NOI18N
         btnSalir.setText("Salir");
@@ -67,7 +66,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         });
 
         btnPrincipal.setBackground(new java.awt.Color(51, 153, 255));
-        btnPrincipal.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        btnPrincipal.setFont(new java.awt.Font("Roboto", 1, 19)); // NOI18N
         btnPrincipal.setForeground(new java.awt.Color(255, 255, 255));
         btnPrincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/Home.png"))); // NOI18N
         btnPrincipal.setText("Principal");
@@ -82,10 +81,10 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/user.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/doctor (1).png"))); // NOI18N
 
         btnDatos.setBackground(new java.awt.Color(51, 153, 255));
-        btnDatos.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        btnDatos.setFont(new java.awt.Font("Roboto", 1, 19)); // NOI18N
         btnDatos.setForeground(new java.awt.Color(255, 255, 255));
         btnDatos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/Datos.png"))); // NOI18N
         btnDatos.setText("Datos");
@@ -101,7 +100,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
         });
 
         btnVoucher.setBackground(new java.awt.Color(51, 153, 255));
-        btnVoucher.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        btnVoucher.setFont(new java.awt.Font("Roboto", 1, 19)); // NOI18N
         btnVoucher.setForeground(new java.awt.Color(255, 255, 255));
         btnVoucher.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/voucher.png"))); // NOI18N
         btnVoucher.setText("Voucher");
@@ -116,59 +115,58 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/farmaciacrud/Resources/farmacia.png"))); // NOI18N
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1)
+                .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jLabel2))
-            .addComponent(btnPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jLabel4))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addComponent(jLabel3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(46, 46, 46))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addGap(26, 26, 26)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addGap(51, 51, 51)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
                 .addComponent(btnPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addContainerGap())
+                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 255));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 3, 17)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 3, 17)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Administración/Control/Ventas");
 
-        dayText.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        dayText.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         dayText.setForeground(new java.awt.Color(255, 255, 255));
         dayText.setText("Hoy es {day} de {month} del {year}");
 
@@ -222,9 +220,12 @@ public class ventanaPrincipal extends javax.swing.JFrame {
             background_DatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(background_DatosLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(content, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(background_DatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(background_DatosLayout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(content, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -327,7 +328,6 @@ public class ventanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;

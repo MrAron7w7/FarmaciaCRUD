@@ -111,9 +111,10 @@ public class DaoVoucherImpl implements DaoVoucher {
             while (this.rs.next()) {
 
                 dataCliente.add(new Cliente(this.rs.getString("nombres"),
-                                     this.rs.getString("apellidos"), 
-                                          this.rs.getInt("dni"), 
-                                      this.rs.getString("datos")));
+                                            this.rs.getString("apellidos"),
+                                            this.rs.getInt("dni"),
+                                            this.rs.getString("datos"),
+                                            this.rs.getDouble("Precioo")));
                 this.cn.close();
 
                 this.rs.close();
