@@ -3,8 +3,8 @@ package farmaciacrud.Ventanas;
 import farmaciacrud.Conexion.ConexionBD;
 import farmaciacrud.DAO.DaoClientImpl;
 import farmaciacrud.MetodosTrabajos.Cliente;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Color;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +16,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class ventanaPanelDatos extends javax.swing.JPanel {
@@ -33,6 +35,7 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
 
         // Defino el numero de columnas de tablas
         DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ID");
         model.addColumn("Nombre");
         model.addColumn("Precio");
         model.addColumn("Stock");
@@ -40,15 +43,16 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
         tbeMedicamentos.setModel(model);
 
         // Vector de las columnas de la tabla medicamentos
-        String[] medicamentos = new String[3];
+        String[] medicamentos = new String[4];
 
         try {
             st = ConexionDB.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
-                medicamentos[0] = rs.getString(2);
-                medicamentos[1] = rs.getString(3);
-                medicamentos[2] = rs.getString(4);
+                medicamentos[0] = rs.getString("idmedicamentos");
+                medicamentos[1] = rs.getString("Nombre");
+                medicamentos[2] = rs.getString("Precio");
+                medicamentos[3] = rs.getString("Stock");
                 model.addRow(medicamentos);
             }
         } catch (SQLException e) {
@@ -58,12 +62,24 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
     }
 
     public ventanaPanelDatos() throws ClassNotFoundException {
-        
+
         initComponents();
-        
+
         mostar("medicamentos");
-        
-        //popMenu();
+
+        setBackground(new Color(0, 0, 0, 0));
+
+        // Definimos el tamaño de las columnas
+        tbeMedicamentos.getColumnModel().getColumn(0).setPreferredWidth(1);
+//        
+//        
+//        tbeMedicamentos.getTableHeader().setFont(new Font("", Font.BOLD, 14));
+//        
+//        tbeMedicamentos.getTableHeader().setBackground(new Color(149,245,139));
+//        
+//        tbeMedicamentos.getTableHeader().setForeground(new Color(255,255,255));
+
+        centradoColumna();
 
     }
 
@@ -329,6 +345,21 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void centradoColumna() {
+        // Centramos las columnas requeridas
+
+        DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
+
+        tcr.setHorizontalAlignment(SwingConstants.CENTER);
+
+        tbeMedicamentos.getColumnModel().getColumn(0).setCellRenderer(tcr);
+
+        tbeMedicamentos.getColumnModel().getColumn(2).setCellRenderer(tcr);
+
+        tbeMedicamentos.getColumnModel().getColumn(3).setCellRenderer(tcr);
+
+    }
+
     private void btnActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseClicked
         try {
             mostar("medicamentos");
@@ -357,59 +388,69 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnBuscarMouseClicked
 
     private void btnRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseClicked
+
         DaoClientImpl cliente_dao = new DaoClientImpl();
+
         Cliente cliente = new Cliente();
 
         try {
 
             //cliente.setId(1);
             cliente.setNombre(datosNombres.getText());
-            
+
             cliente.setApellidos(datosApellidos.getText());
-            
+
             cliente.setDni(Integer.parseInt(datosDNI.getText()));
-            
+
             cliente.setBusqueda(datosBusqueda.getText());
 
             // Validamos los cambios
             if (cliente.getNombre().equals("") | cliente.getApellidos().equals("") | cliente.getDni() < 0 | cliente.getBusqueda().equals("")) {
-                
+
                 Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
+
                 JOptionPane.showMessageDialog(null, "Debe llenar los datos", "Invalido", JOptionPane.WARNING_MESSAGE, wrong);
-                
+
             } else {
-                
-                Icon check = new ImageIcon(getClass().getResource("check.png"));
-                
-                JOptionPane.showMessageDialog(null, "Guardado con exito", "Valido", JOptionPane.WARNING_MESSAGE, check);
-                
-                int fila = tbeMedicamentos.getSelectedRow();
-                
-                String idenC = tbeMedicamentos.getValueAt(fila, 1).toString();
-                
-                cliente_dao.registrar(cliente, idenC);
-                
-                datosNombres.setText("");
-                
-                datosApellidos.setText("");
-                
-                datosDNI.setText("");
-                
-                datosBusqueda.setText("");
-                
+
                 // Se decrementa el stock
+                int filaN = tbeMedicamentos.getSelectedRow();
+
+                String filaNombre = tbeMedicamentos.getValueAt(filaN, 0).toString();
+
+                String filaColumna = tbeMedicamentos.getValueAt(filaN, 3).toString();
                 
-                DaoClientImpl dao_client = new DaoClientImpl();
-                
-               int filaC = tbeMedicamentos.getSelectedRow();
-               
-               String nombreColumna = tbeMedicamentos.getValueAt(filaC, 0).toString();
-               
-                System.out.println("go: " + nombreColumna);
-                
-                
-                //dao_client.actualizar(nombreFilaColumna, datoColumna);
-                
+                String filaAgotada = tbeMedicamentos.getValueAt(filaN, 1).toString();
+
+                int intFilaColumna = Integer.parseInt(filaColumna) - 1;
+
+                if (intFilaColumna < 0) {
+
+                    JOptionPane.showMessageDialog(null, "Stock de " + filaAgotada, "¡Agotado!", JOptionPane.WARNING_MESSAGE);
+
+                } else {
+                    cliente_dao.actualizar(intFilaColumna, filaNombre);
+
+                    Icon check = new ImageIcon(getClass().getResource("check.png"));
+
+                    JOptionPane.showMessageDialog(null, "Guardado con exito", "Valido", JOptionPane.WARNING_MESSAGE, check);
+
+                    int fila = tbeMedicamentos.getSelectedRow();
+
+                    String idenC = tbeMedicamentos.getValueAt(fila, 2).toString();
+
+                    cliente_dao.registrar(cliente, idenC);
+
+                    datosNombres.setText("");
+
+                    datosApellidos.setText("");
+
+                    datosDNI.setText("");
+
+                    datosBusqueda.setText("");
+
+                }
+
             }
         } catch (Exception e) {
             Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
@@ -425,9 +466,9 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
     private void datosDNIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datosDNIActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_datosDNIActionPerformed
-   
+
     private void buscarMedicamentos(String medi) throws ClassNotFoundException {
-        
+
         String sql = "SELECT * FROM medicamentos WHERE Nombre like '%" + medi + "%'";
 
         ResultSet rs;
@@ -435,6 +476,8 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
         PreparedStatement pst;
 
         DefaultTableModel mode = new DefaultTableModel();
+
+        mode.addColumn("ID");
 
         mode.addColumn("Nombre");
 
@@ -444,7 +487,7 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
 
         tbeMedicamentos.setModel(mode);
 
-        String[] dato = new String[3];
+        String[] dato = new String[4];
 
         try {
             Connection con = ConexionBD.getInstance().conectar();
@@ -455,45 +498,19 @@ public class ventanaPanelDatos extends javax.swing.JPanel {
 
             while (rs.next()) {
 
-                dato[0] = rs.getString("Nombre");
+                dato[0] = rs.getString("idmedicamentos");
 
-                dato[1] = rs.getString("Precio");
+                dato[1] = rs.getString("Nombre");
 
-                dato[2] = rs.getString("Stock");
+                dato[2] = rs.getString("Precio");
+
+                dato[3] = rs.getString("Stock");
 
                 mode.addRow(dato);
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.toString());
         }
-
-    }
-
-    // Agregamos el PopMenu en la cual le ponemos una imagen que al momento de seleccionar nos guarde los datos
-    public void popMenu() {
-        JMenuItem eliminar = new JMenuItem("Seleccionar", icono("/farmaciacrud/Resources/selecc.png", 25, 25));
-        
-         eliminar.addActionListener((ActionEvent e) -> {
-             
-             int fila = tbeMedicamentos.getSelectedRow();
-             
-             String identidad = tbeMedicamentos.getValueAt(fila, 2).toString();
-             
-             System.out.println(identidad);
-             
-        });
-        
-        popMenuCliente.add(eliminar);
-
-        tbeMedicamentos.setComponentPopupMenu(popMenuCliente);
-
-    }
-
-    public Icon icono(String ruta, int width, int heigh) {
-
-        Icon eliminar = new ImageIcon(new ImageIcon(getClass().getResource(ruta)).getImage().getScaledInstance(width, heigh, 0));
-
-        return eliminar;
 
     }
 

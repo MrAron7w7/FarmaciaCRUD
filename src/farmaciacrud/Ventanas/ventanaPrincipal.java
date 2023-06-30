@@ -156,7 +156,7 @@ public class ventanaPrincipal extends javax.swing.JFrame {
                 .addComponent(btnVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addGap(34, 34, 34))
         );
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 255));

@@ -91,9 +91,9 @@ public class DaoClientImpl implements DaoCliente {
     }
 
     @Override
-    public boolean actualizar(int columnaNombre, String columnaEditar) {
+    public boolean actualizar(int columnaNombre, String filaNombre) {
 
-        String sql = "UPDATE medicamentos SET Stock='"+ columnaNombre + "'" + "WHERE Nombre='" + columnaEditar + "'" ;
+        String sql = "UPDATE medicamentos SET Stock='" + columnaNombre + "'" + "WHERE idmedicamentos='" + filaNombre + "'";
 
         ConexionBD conector = ConexionBD.getInstance();
 
@@ -102,7 +102,6 @@ public class DaoClientImpl implements DaoCliente {
         PreparedStatement pst;
 
         //ResultSet rs;
-        
         int rs;
 
         try {
@@ -112,21 +111,21 @@ public class DaoClientImpl implements DaoCliente {
             pst = cn.prepareStatement(sql);
 
             rs = pst.executeUpdate();
-            
-            if(rs > 0){
-                
+
+            if (rs > 0) {
+
                 return true;
-                
-            }else{
-                
+
+            } else {
+
                 return false;
-                
+
             }
 
         } catch (ClassNotFoundException | SQLException e) {
-            
+
             System.out.println("Error de actualizar: " + e.toString());
-            
+
         }
         return false;
 
@@ -135,7 +134,7 @@ public class DaoClientImpl implements DaoCliente {
     @Override
     public boolean upda(String con) {
 
- String sql = "UPDATE medicamentos SET Stock='"+ con + "'";
+        String sql = "UPDATE medicamentos SET Stock='" + con + "'";
 
         ConexionBD conector = ConexionBD.getInstance();
 
@@ -144,7 +143,6 @@ public class DaoClientImpl implements DaoCliente {
         PreparedStatement pst;
 
         //ResultSet rs;
-        
         int rs;
 
         try {
@@ -154,21 +152,21 @@ public class DaoClientImpl implements DaoCliente {
             pst = cn.prepareStatement(sql);
 
             rs = pst.executeUpdate();
-            
-            if(rs > 0){
-                
+
+            if (rs > 0) {
+
                 return true;
-                
-            }else{
-                
+
+            } else {
+
                 return false;
-                
+
             }
 
         } catch (ClassNotFoundException | SQLException e) {
-            
+
             System.out.println("Error de actualizar: " + e.toString());
-            
+
         }
         return false;
 

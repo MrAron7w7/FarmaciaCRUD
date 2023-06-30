@@ -6,6 +6,7 @@ import java.awt.HeadlessException;
 import java.text.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class ventanaPanelHorario extends javax.swing.JPanel {
@@ -47,6 +48,8 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
         initComponents();
 
         mostrarDatos();
+        
+        centradoColumna();
         
     }
 
@@ -220,7 +223,17 @@ public class ventanaPanelHorario extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void centradoColumna(){
+        // Centramos las columnas requeridas
+        
+        DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
 
+        tcr.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        tbeHorarios.getColumnModel().getColumn(1).setCellRenderer(tcr);
+        
+    }
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
 
         // Agregamos y validamos los campos, si estan vacios o si ponen datos

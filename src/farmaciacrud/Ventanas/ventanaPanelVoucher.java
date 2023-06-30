@@ -16,6 +16,7 @@ import java.text.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class ventanaPanelVoucher extends javax.swing.JPanel {
 
@@ -84,6 +85,8 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
         initComponents();
 
         mostrar();
+        
+        centrarColumna();
 
     }
 
@@ -253,7 +256,24 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void centrarColumna(){
+        // Centramos las columnas requeridas
+        
+        DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
 
+        tcr.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        tbeVoucher.getColumnModel().getColumn(0).setCellRenderer(tcr);
+        
+        tbeVoucher.getColumnModel().getColumn(1).setCellRenderer(tcr);
+        
+        tbeVoucher.getColumnModel().getColumn(2).setCellRenderer(tcr);
+        
+        tbeVoucher.getColumnModel().getColumn(3).setCellRenderer(tcr);
+
+
+    }
 
     private void btnBuscarVoucherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarVoucherMouseClicked
 
@@ -295,6 +315,8 @@ public class ventanaPanelVoucher extends javax.swing.JPanel {
                 tbeVoucher.setEnabled(true);
 
                 this.tbeVoucher.setModel(model);
+                
+                centrarColumna();
 
                 //buscarCliente(txtDniVoucher.getText());
             } else {

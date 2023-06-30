@@ -7,7 +7,7 @@ public interface DaoCliente {
     public void eliminar(Cliente cliente);
     public void buscar(Cliente cliente);
     
-    public boolean actualizar(int columnaNombre, String columnaEditar);
+    public boolean actualizar(int columnaNombre, String filaNombre);
     
     public boolean upda(String con);
 }
