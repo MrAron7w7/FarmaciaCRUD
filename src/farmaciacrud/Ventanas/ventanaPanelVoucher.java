@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 public class ventanaPanelVoucher extends javax.swing.JPanel {
 
-    // Imagenes predeterminadas en el sistema
+    // Imagenes predeterminadas en el sistemasd
     private final Icon check = new ImageIcon(getClass().getResource("check.png"));
 
     private final Icon wrong = new ImageIcon(getClass().getResource("wrong.png"));
